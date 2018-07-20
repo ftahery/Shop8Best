@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="105dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/layout_border"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/jwellery2"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Gold Bracelet"
+        android:textColor="#E1B82F"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Yellow"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/item_carat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="21 carat"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_color" />
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="25.00 KD"
+        android:textColor="#428bca"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_carat" />
+
+    <TextView
+        android:id="@+id/item_quantity_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="7dp"
+        android:text="Quantity: "
+        android:textColor="#e5e5e5"
+        app:layout_constraintLeft_toRightOf="@+id/item_price"
+        app:layout_constraintTop_toBottomOf="@+id/item_carat" />
+
+    <TextView
+        android:id="@+id/item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="7dp"
+        android:text="1"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_quantity_tag"
+        app:layout_constraintTop_toBottomOf="@+id/item_carat" />
+
+    <TextView
+        android:id="@+id/item_weight_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="4dp"
+        android:text="Weight: "
+        android:textColor="#e5e5e5"
+        app:layout_constraintLeft_toRightOf="@+id/item_carat"
+        app:layout_constraintTop_toBottomOf="@+id/item_color" />
+
+    <TextView
+        android:id="@+id/item_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="1.008"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintLeft_toRightOf="@+id/item_weight_tag"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_color" />
+
+    <TextView
+        android:id="@+id/item_size_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="67dp"
+        android:layout_marginTop="4dp"
+        android:text="Size: "
+        android:textColor="#e5e5e5"
+        app:layout_constraintLeft_toRightOf="@+id/item_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/item_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="ASIA-34"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/item_size_tag"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintLeft_toRightOf="@+id/item_size_tag"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_name"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</android.support.constraint.ConstraintLayout>

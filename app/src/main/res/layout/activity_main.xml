@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/productListingPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_listing_page"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:design="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:context="shop8best.fakhruddin.com.shop8best.MainActivity">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bot_nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#262323"
+            design:itemIconTint="@drawable/bottom_navigation_item_color"
+            design:itemTextColor="@drawable/bottom_navigation_item_color"
+            design:menu="@menu/base_bottom_navigation"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <GridView
+        android:id="@+id/grid_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:numColumns="2"
+        android:verticalSpacing="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_listing_page"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</android.support.constraint.ConstraintLayout>

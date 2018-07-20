@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_description_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical"
+    tools:context=".ProductDescription">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_description_page"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Gold Necklace Set"
+        android:textColor="#428bca"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_description_page" />
+
+    <TextView
+        android:id="@+id/item_color_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Color: "
+        android:textColor="#e5e5e5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_weight_tag"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/item_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Rose Gold"
+        android:textColor="#E1B82F"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/item_weight"
+        app:layout_constraintLeft_toRightOf="@+id/item_color_tag" />
+
+    <TextView
+        android:id="@+id/item_weight_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Weight: "
+        android:textColor="#e5e5e5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_carat_tag"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/item_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="1.800"
+        android:textColor="#E1B82F"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/item_carat"
+        app:layout_constraintLeft_toRightOf="@+id/item_weight_tag" />
+
+
+    <TextView
+        android:id="@+id/item_carat_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Carat: "
+        android:textColor="#e5e5e5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_price"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/item_carat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="21"
+        android:textColor="#E1B82F"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/item_price"
+        app:layout_constraintLeft_toRightOf="@+id/item_carat_tag" />
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="25.00 KD"
+        android:textColor="#428bca"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/addToCart"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
+
+    <TextView
+        android:id="@+id/item_size_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Size: "
+        android:textColor="#e5e5e5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_price"
+        app:layout_constraintRight_toLeftOf="@+id/item_size_type" />
+
+    <Spinner
+        android:id="@+id/item_size_type"
+        android:layout_width="69dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:background="#2E2E2D"
+        app:layout_constraintBottom_toTopOf="@+id/item_price"
+        app:layout_constraintRight_toLeftOf="@+id/item_size" />
+
+    <Spinner
+        android:id="@+id/item_size"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:background="#2E2E2D"
+        app:layout_constraintBottom_toTopOf="@+id/item_price"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/addToCart"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Add to Cart"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:roundedCorners="true"
+        app:showOutline="false"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:design="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:context="shop8best.fakhruddin.com.shop8best.MainActivity"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bot_nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#262323"
+            design:itemIconTint="@drawable/bottom_navigation_item_color"
+            design:itemTextColor="@drawable/bottom_navigation_item_color"
+            design:menu="@menu/base_bottom_navigation"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carouselView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/layout_border"
+        app:fillColor="#FFFFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/item_color_tag"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_name"
+        app:pageColor="#00000000"
+        app:radius="3dp"
+        app:slideInterval="12000"
+        app:strokeColor="#FF777777"
+        app:strokeWidth="1dp"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+
+</android.support.constraint.ConstraintLayout>

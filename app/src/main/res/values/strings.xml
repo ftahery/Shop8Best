@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Shop8Best</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">323775988115029</string>
+    <string name="fb_login_protocol_scheme">fb323775988115029</string>
+    <string name="server_client_id">827748585652-rbtq7immgh3eelkbhvpmv3plneahivkc.apps.googleusercontent.com</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>

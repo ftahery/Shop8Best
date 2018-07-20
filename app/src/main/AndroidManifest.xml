@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="company.shop8best">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-sdk tools:overrideLibrary="com.shobhitpuri.custombuttons, com.thoughtbot.expandablerecyclerview" />
+
+    <application
+        android:name="company.shop8best.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/s8b_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/s8b_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name="company.shop8best.SignInPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.ProductListingPage">
+            <intent-filter>
+                <action android:name="android.intent.action.ProductListingPage" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.ProductDescription">
+            <intent-filter>
+                <action android:name="company.shop8best.ProductDescription" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.CartPage">
+            <intent-filter>
+                <action android:name="company.shop8best.CartPage" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.AccountPage">
+            <intent-filter>
+                <action android:name="company.shop8best.AccountPage" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.AddressSelection">
+            <intent-filter>
+                <action android:name="company.shop8best.AddressSelection" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.AddressPage">
+            <intent-filter>
+                <action android:name="company.shop8best.AddressPage" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="company.shop8best.CheckoutPage">
+            <intent-filter>
+                <action android:name="company.shop8best.CheckoutPage" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="company.shop8best.utils.ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
+        <activity
+            android:name="company.shop8best.FacebookLogin"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+    </application>
+
+</manifest>

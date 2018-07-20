@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/cart_imageView"
+        android:layout_width="105dp"
+        android:layout_height="104dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/layout_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/jwellery2" />
+
+    <TextView
+        android:id="@+id/cart_itemName"
+        android:layout_width="218dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Gold Bracelet"
+        android:textColor="#E1B82F"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/cart_imageView"
+        app:layout_constraintRight_toLeftOf="@+id/cart_remove_item"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cart_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Yellow Gold"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/cart_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/cart_itemName" />
+
+    <TextView
+        android:id="@+id/cart_carat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="21 carat"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/cart_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/cart_color" />
+
+    <Button
+        android:id="@+id/cart_remove_item"
+        android:layout_width="20dp"
+        android:layout_height="21dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/delete"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cart_item_price"
+        android:layout_width="116dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="25.00 KD"
+        android:textAllCaps="true"
+        android:textColor="#428bca"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/cart_imageView"
+        app:layout_constraintRight_toLeftOf="@+id/cart_itemQuantity_minus"
+        app:layout_constraintTop_toBottomOf="@+id/cart_carat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/cart_itemQuantity_minus"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/minus"
+        app:layout_constraintBottom_toBottomOf="@+id/cart_item_price"
+        app:layout_constraintRight_toLeftOf="@+id/cart_item_quantity"
+        app:layout_constraintTop_toBottomOf="@+id/cart_carat" />
+
+    <Button
+        android:id="@+id/cart_itemQuantity_plus"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/plus"
+        app:layout_constraintBottom_toBottomOf="@+id/cart_item_price"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cart_carat"
+        app:layout_constraintVertical_bias="0.454" />
+
+    <TextView
+        android:id="@+id/cart_item_quantity"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="#e5e5e5"
+        app:layout_constraintBottom_toBottomOf="@+id/cart_item_price"
+        app:layout_constraintRight_toLeftOf="@+id/cart_itemQuantity_plus"
+        app:layout_constraintTop_toBottomOf="@+id/cart_carat" />
+
+    <TextView
+        android:id="@+id/item_weight_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Weight: "
+        android:textColor="#e5e5e5"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintLeft_toRightOf="@+id/cart_carat"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cart_color" />
+
+    <TextView
+        android:id="@+id/cart_item_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="1.008 g"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/item_weight_tag"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cart_color" />
+
+    <TextView
+        android:id="@+id/cart_item_size_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="4dp"
+        android:text="Size: "
+        android:textColor="#e5e5e5"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/item_weight_tag"
+        app:layout_constraintLeft_toRightOf="@+id/cart_color"
+        app:layout_constraintTop_toBottomOf="@+id/cart_itemName" />
+
+    <TextView
+        android:id="@+id/cart_item_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="ASIA 34"
+        android:textColor="#E1B82F"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cart_item_weight"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintLeft_toRightOf="@+id/cart_item_size_tag"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cart_itemName"
+        app:layout_constraintVertical_bias="0.0" />
+
+</android.support.constraint.ConstraintLayout>
