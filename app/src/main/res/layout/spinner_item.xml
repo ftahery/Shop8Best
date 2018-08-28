@@ -7,4 +7,4 @@
     android:hint="Size"
     android:textSize="18dp"
     android:textAlignment="center"
-    android:textColor="#FFFFFF" />
+    android:textColor="#000000" />

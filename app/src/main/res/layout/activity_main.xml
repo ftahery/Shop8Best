@@ -5,13 +5,13 @@
     android:id="@+id/productListingPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#FFFFFF">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_listing_page"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:background="@color/common_google_signin_btn_text_dark_focused"
+        android:background="#F8AB32"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintLeft_toLeftOf="parent"

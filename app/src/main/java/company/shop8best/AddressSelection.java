@@ -45,13 +45,10 @@ import company.shop8best.utils.ProgressDialogDisplay;
  * Created by dat9 on 30/01/18.
  */
 
-public class AddressSelection extends AppCompatActivity implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener,ConnectivityReceiver.ConnectivityReceiverListener {
+public class AddressSelection extends AppCompatActivity implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     BootstrapButton addNewAddress;
     public static final String TAG = "AddressSelection";
-    public static final String SAVED_DATA_KEY = "SAVED_DATA";
-
-    ListView listView;
     AddressSelectionAdapter addressSelectionAdapter = null;
 
     ExpandableListView expandableListView;
@@ -82,7 +79,7 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         MyApplication.getInstance().setConnectivityListener(this);
         isConnected = ConnectivityReceiver.isConnected(getApplicationContext());
 
-        if(isConnected) {
+        if (isConnected) {
             if (SecurityCacheMapService.INSTANCE.exists("accessToken")) {
                 accessToken = SecurityCacheMapService.INSTANCE.get("accessToken");
                 ArrayList<UserAddresses> addressList = generateData();
@@ -104,11 +101,11 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        Log.d(TAG,"HEYYYYY THIS IS THE ITEM ID :" +item.getItemId());
-        switch(item.getItemId()){
+        Log.d(TAG, "HEYYYYY THIS IS THE ITEM ID :" + item.getItemId());
+        switch (item.getItemId()) {
 
             case android.R.id.home:
-                if(isConnected){
+                if (isConnected) {
                     finish();
                 }
                 return true;
@@ -134,7 +131,7 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_address);
         setTitle("Address");
-        toolbar.setTitleTextColor(Color.rgb(228,127,49));
+        toolbar.setTitleTextColor(Color.rgb(228, 127, 49));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -155,9 +152,9 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.home_bottom_nav:
-                        if(isConnected) {
+                        if (isConnected) {
                             Intent goToProductListingPage = new Intent(AddressSelection.this, ProductListingPage.class);
                             goToProductListingPage.putExtra("SIGNEDIN", true);
                             startActivity(goToProductListingPage);
@@ -165,7 +162,7 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
                         return true;
 
                     case R.id.account_bottom_nav:
-                        if(isConnected) {
+                        if (isConnected) {
                             Intent goToAccountPage = new Intent(AddressSelection.this, AccountPage.class);
                             startActivity(goToAccountPage);
                         }
@@ -178,13 +175,13 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         addNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isConnected) {
+                if (isConnected) {
                     startActivity(new Intent(AddressSelection.this, AddressPage.class));
                 }
             }
         });
 
-        if(isConnected){
+        if (isConnected) {
             new GetTokenTask().execute();
         }
     }
@@ -210,19 +207,26 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         }
     }
 
-    public ArrayList<UserAddresses> generateData(){
+    public ArrayList<UserAddresses> generateData() {
         ArrayList<UserAddresses> addressList = new ArrayList<>();
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put("Authorization",accessToken);
-        String userAddressesBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+Constants.USER_ADDRESSES,headers);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
+        String userAddressesBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.USER_ADDRESSES, headers);
 
         Gson gson = new Gson();
-        userAddresses = gson.fromJson(userAddressesBody,UserAddresses[].class);
+        userAddresses = gson.fromJson(userAddressesBody, UserAddresses[].class);
 
-        for(UserAddresses userAddress : userAddresses) {
+        for (UserAddresses userAddress : userAddresses) {
             addressList.add(userAddress);
         }
         return addressList;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 
@@ -235,14 +239,13 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
     public void onNetworkConnectionChanged(boolean isConnected) {
         this.isConnected = isConnected;
 
-        if(!isConnected){
+        if (!isConnected) {
             notConnectedToInternet();
-        }
-        else{
+        } else {
             expandableListView.setEnabled(true);
             expandableListView.setVisibility(View.VISIBLE);
             addNewAddress.setEnabled(true);
-            if(snackbar!=null && snackbar.isShown()){
+            if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
                 startActivity(getIntent());
                 finish();
@@ -255,7 +258,7 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         expandableListView.setEnabled(false);
         expandableListView.setVisibility(View.GONE);
         addNewAddress.setEnabled(false);
-        snackbar = Snackbar.make(constraintLayout,"No internet connection. Please retry",Snackbar.LENGTH_INDEFINITE)
+        snackbar = Snackbar.make(constraintLayout, "No internet connection. Please retry", Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -271,29 +274,29 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
         snackbar.show();
     }
 
-    class GetTokenTask extends AsyncTask<String,Void,ArrayList<UserAddresses>> {
+    class GetTokenTask extends AsyncTask<String, Void, ArrayList<UserAddresses>> {
 
         ArrayList<UserAddresses> addressList;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             signInPage = new SignInPage();
             accessTokenUtil = new AccessTokenUtil();
-            progressDialog = ProgressDialogDisplay.displayProgressDisplay(progressDialog,AddressSelection.this,"Address","Fetching addresses...");
+            progressDialog = ProgressDialogDisplay.displayProgressDisplay(progressDialog, AddressSelection.this, "Address", "Fetching addresses...");
         }
 
         @Override
         protected ArrayList<UserAddresses> doInBackground(String... params) {
             try {
-                if(SecurityCacheMapService.INSTANCE.exists("accessToken")){
+                if (SecurityCacheMapService.INSTANCE.exists("accessToken")) {
                     accessToken = SecurityCacheMapService.INSTANCE.get("accessToken");
-                }
-                else {
+                } else {
                     accessToken = GoogleAuthUtil.getToken(getApplicationContext(), signInPage.getAccount(), scope);
                     SecurityCacheMapService.INSTANCE.putToCache("accessToken", accessToken, accessTokenUtil.getTokenExpiryTime(accessToken));
                 }
 
-                if(accessToken!=null) {
+                if (accessToken != null) {
                     addressList = new ArrayList<>();
                     addressList = generateData();
                     return addressList;
@@ -315,11 +318,10 @@ public class AddressSelection extends AppCompatActivity implements AbsListView.O
     }
 
     private void getAddressList(ArrayList<UserAddresses> addressList) {
-        addressSelectionAdapter = new AddressSelectionAdapter(getApplicationContext(),addressList);
+        addressSelectionAdapter = new AddressSelectionAdapter(getApplicationContext(), addressList);
         expandableListView.setAdapter(addressSelectionAdapter);
 
     }
-
 
 
 }

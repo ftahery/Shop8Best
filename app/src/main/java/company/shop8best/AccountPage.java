@@ -52,9 +52,9 @@ import company.shop8best.utils.ProgressDialogDisplay;
  * Created by dat9 on 21/01/18.
  */
 
-public class AccountPage extends AppCompatActivity implements View.OnClickListener ,AbsListView.OnScrollListener, AbsListView.OnItemClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
+public class AccountPage extends AppCompatActivity implements View.OnClickListener, AbsListView.OnScrollListener, AbsListView.OnItemClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
-    private static final String TAG  = "AccountPage";
+    private static final String TAG = "AccountPage";
 
     SignInPage signInPage;
     GoogleSignInAccount googleSignInAccount;
@@ -110,11 +110,11 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        Log.d(TAG,"HEYYYYY THIS IS THE ITEM ID :" +item.getItemId());
-        switch(item.getItemId()){
+        Log.d(TAG, "HEYYYYY THIS IS THE ITEM ID :" + item.getItemId());
+        switch (item.getItemId()) {
 
             case android.R.id.home:
-                if(isConnected) {
+                if (isConnected) {
                     finish();
                 }
                 return true;
@@ -129,7 +129,7 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_account);
         setTitle("Account");
-        toolbar.setTitleTextColor(Color.rgb(228,127,49));
+        toolbar.setTitleTextColor(Color.rgb(228, 127, 49));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -138,7 +138,7 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
         signInPage = new SignInPage();
         googleSignInAccount = SignInPage.getGoogleSignInAccount();
         googleSignInClient = SignInPage.getGoogleSignInClient();
-        constraintLayout = (ConstraintLayout) findViewById(R.id.account_page_constraint_layout) ;
+        constraintLayout = (ConstraintLayout) findViewById(R.id.account_page_constraint_layout);
 
         gridView = (GridView) findViewById(R.id.account_page_grid_view);
         user_name = (TextView) findViewById(R.id.user_name);
@@ -156,9 +156,9 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.home_bottom_nav:
-                        if(isConnected) {
+                        if (isConnected) {
                             Intent goToProductListingPage = new Intent(AccountPage.this, ProductListingPage.class);
                             goToProductListingPage.putExtra("SIGNEDIN", true);
                             startActivity(goToProductListingPage);
@@ -173,15 +173,20 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
         });
 
 
-
         user_name.setText(googleSignInAccount.getDisplayName());
         user_email.setText(googleSignInAccount.getEmail());
 
-        if(isConnected) {
+        if (isConnected) {
             progressDialog = new ProgressDialog(this);
             signOut.setOnClickListener(this);
             new GetTokenTask().execute();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -209,9 +214,9 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sign_out_button:
-                if(isConnected) {
+                if (isConnected) {
                     signOut();
                     signInPage.setGoogleSignInClient(googleSignInClient);
                     Intent intent = new Intent(this, SignInPage.class);
@@ -230,19 +235,20 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
 
     private ArrayList<OrderedItemResponse> generateData() {
         ArrayList<OrderedItemResponse> orderList = new ArrayList<>();
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put("Authorization",accessToken);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
-        String responseBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+Constants.GET_PAST_ORDERS,headers);
+        String responseBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.GET_PAST_ORDERS, headers);
 
         Gson gson = new Gson();
-        orders = gson.fromJson(responseBody,OrderedItemResponse[].class);
+        orders = gson.fromJson(responseBody, OrderedItemResponse[].class);
 
-        for(OrderedItemResponse order : orders) {
+        for (OrderedItemResponse order : orders) {
             orderList.add(order);
         }
 
-        if(orderList!=null){
+        if (orderList != null) {
             Collections.sort(orderList, new Comparator<OrderedItemResponse>() {
                 @Override
                 public int compare(OrderedItemResponse o1, OrderedItemResponse o2) {
@@ -266,13 +272,12 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
     public void onNetworkConnectionChanged(boolean isConnected) {
         this.isConnected = isConnected;
 
-        if(!isConnected){
+        if (!isConnected) {
             notConnectedToInternet();
-        }
-        else{
+        } else {
             gridView.setEnabled(true);
             signOut.setEnabled(true);
-            if(snackbar!=null && snackbar.isShown()){
+            if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
                 startActivity(getIntent());
                 finish();
@@ -283,7 +288,7 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
     private void notConnectedToInternet() {
         gridView.setEnabled(false);
         signOut.setEnabled(false);
-        snackbar = Snackbar.make(constraintLayout,"No internet connection. Please retry",Snackbar.LENGTH_INDEFINITE)
+        snackbar = Snackbar.make(constraintLayout, "No internet connection. Please retry", Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -299,32 +304,32 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
         snackbar.show();
     }
 
-    class GetTokenTask extends AsyncTask<Void,Void,ArrayList<OrderedItemResponse>>{
+    class GetTokenTask extends AsyncTask<Void, Void, ArrayList<OrderedItemResponse>> {
 
         ArrayList<OrderedItemResponse> orderedItemsList;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             signInPage = new SignInPage();
             accessTokenUtil = new AccessTokenUtil();
-            ProgressDialogDisplay.displayProgressDisplay(progressDialog,AccountPage.this,"Orders","Fetching orders...");
+            ProgressDialogDisplay.displayProgressDisplay(progressDialog, AccountPage.this, "Orders", "Fetching orders...");
         }
 
         @Override
         protected ArrayList<OrderedItemResponse> doInBackground(Void... params) {
             try {
-                if(SecurityCacheMapService.INSTANCE.exists("accessToken")){
+                if (SecurityCacheMapService.INSTANCE.exists("accessToken")) {
                     accessToken = SecurityCacheMapService.INSTANCE.get("accessToken");
-                }
-                else {
+                } else {
                     accessToken = GoogleAuthUtil.getToken(getApplicationContext(), signInPage.getAccount(), scope);
                     SecurityCacheMapService.INSTANCE.putToCache("accessToken", accessToken, accessTokenUtil.getTokenExpiryTime(accessToken));
                 }
 
-                if(accessToken!=null) {
+                if (accessToken != null) {
                     orderedItemsList = new ArrayList<>();
                     orderedItemsList = generateData();
-                    Log.d(TAG,"Here is the length of orders and accessToken" + orderedItemsList.size() + " " + accessToken);
+                    Log.d(TAG, "Here is the length of orders and accessToken" + orderedItemsList.size() + " " + accessToken);
                     return orderedItemsList;
                 }
             } catch (IOException e) {
@@ -344,21 +349,21 @@ public class AccountPage extends AppCompatActivity implements View.OnClickListen
     }
 
     private void getOrderList(ArrayList<OrderedItemResponse> ordersList) {
-        accountPageAdapter = new AccountPageAdapter(AccountPage.this,android.R.layout.simple_list_item_1,ordersList);
+        accountPageAdapter = new AccountPageAdapter(AccountPage.this, android.R.layout.simple_list_item_1, ordersList);
         if (mData == null) {
             mData = new ArrayList<>();
-            for(int i=0;i<ordersList.size();i++){
+            for (int i = 0; i < ordersList.size(); i++) {
                 mData.add(ordersList.get(i));
             }
         }
 
         Iterator<OrderedItemResponse> data = mData.iterator();
-        while(data.hasNext()){
+        while (data.hasNext()) {
             accountPageAdapter.add(data.next());
         }
 
 
-        for(OrderedItemResponse orderedItemResponse : ordersList){
+        for (OrderedItemResponse orderedItemResponse : ordersList) {
             Log.d(TAG, "HERE ARE THE ITEMS-----> " + orderedItemResponse.getItem_name() + " " + orderedItemResponse.getOrder_date());
         }
 

@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#FFFFFF">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="#F8AB32"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintHorizontal_bias="0.0"

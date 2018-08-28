@@ -1,4 +1,4 @@
-package company.shop8best;
+package company.shop8best.service;
 
 import android.util.Log;
 
@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import company.shop8best.SignInPage;
 import company.shop8best.constants.Constants;
 import company.shop8best.model.CartItem;
 import company.shop8best.utils.AccessTokenUtil;
@@ -26,22 +27,22 @@ public class CartService {
     String scope = "oauth2: profile email";
 
     public void removeItemFromCart(CartItem itemToRemove, String accessToken) {
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put("Authorization",accessToken);
-        String removeItemBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+Constants.REMOVE_ITEM_FROM_CART+itemToRemove.getItem_id(),headers);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessToken);
+        String removeItemBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.REMOVE_ITEM_FROM_CART + itemToRemove.getItem_id(), headers);
 
         try {
             JSONObject removeItem = new JSONObject(removeItemBody);
-            Log.d(TAG,"Status of removing the item: " + removeItem.getString("message"));
+            Log.d(TAG, "Status of removing the item: " + removeItem.getString("message"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean addQuantityToCartItem(CartItem cartItem, String accessToken,String itemQuantity){
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put("Authorization",accessToken);
-        String addQuantityBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+ Constants.ADD_QUANTITY_TO_CART_ITEM+cartItem.getItem_id()+"/quantity/"+itemQuantity,headers);
+    public boolean addQuantityToCartItem(CartItem cartItem, String accessToken, String itemQuantity) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessToken);
+        String addQuantityBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.ADD_QUANTITY_TO_CART_ITEM + cartItem.getItem_id() + "/quantity/" + itemQuantity, headers);
 
         try {
             JSONObject minusItem = new JSONObject(addQuantityBody);
@@ -52,10 +53,10 @@ public class CartService {
         }
     }
 
-    public boolean minusItemFromCartItem(CartItem cartItem, String accessToken){
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put("Authorization",accessToken);
-        String minusItemBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+Constants.MINUS_QUANTITY_FROM_CART_ITEM+cartItem.getItem_id(),headers);
+    public boolean minusItemFromCartItem(CartItem cartItem, String accessToken) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessToken);
+        String minusItemBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.MINUS_QUANTITY_FROM_CART_ITEM + cartItem.getItem_id(), headers);
 
         try {
             JSONObject minusItem = new JSONObject(minusItemBody);

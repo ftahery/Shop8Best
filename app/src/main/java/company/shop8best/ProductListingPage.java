@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -43,7 +44,10 @@ import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookException;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -60,6 +64,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -80,16 +85,13 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
         AbsListView.OnItemClickListener, ConnectivityReceiver.ConnectivityReceiverListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "ProductListingPage";
-    private static final String SAVED_DATA_KEY = "SAVED_DATA";
     private GridView mGridView;
     private boolean mHasRequestedMore;
+    private boolean doubleBackToExitPressedOnce = false;
     private ProductListingAdapter mAdapter = null;
     BottomNavigationView bottomNavigationView;
     MenuItem menuItem;
-    Account account;
     SignInPage signInPage = null;
-    GoogleSignInClient googleSignInClient;
-    private Context context = this;
     ConstraintLayout constraintLayout;
 
     private ArrayList<Item> mData = null;
@@ -100,7 +102,6 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
     Item[] items;
     String accessToken;
     String email;
-    private PopupWindow popUpWindow;
     ArrayList<Item> listData = new ArrayList<>();
     ProgressDialog progressDialog;
     String scope = "oauth2: profile email";
@@ -160,6 +161,7 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
         }
 
         if (isSignedIn && isConnected) {
+
             if (SecurityCacheMapService.INSTANCE.exists("accessToken")) {
                 accessToken = SecurityCacheMapService.INSTANCE.get("accessToken");
                 Log.d(TAG, "ASYNC TASK IS NOT CALLED !!!!!!");
@@ -167,8 +169,25 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
                     getCartCount(accessToken);
                 }
             } else {
-                Log.d(TAG, "I'M ASYNC TASK  FOR GETTING CartCount in onResume !!!!!!");
-                new GetTokenTask().execute("getCartCount");
+
+                if ("google".equals(SignInPage.getSignedInUsing())) {
+                    Log.d(TAG, "I'M ASYNC TASK  FOR GETTING CartCount in onResume !!!!!!");
+                    new GetTokenTask().execute("getCartCount");
+                } else if ("facebook".equals(SignInPage.getSignedInUsing())) {
+                    AccessToken.refreshCurrentAccessTokenAsync(new AccessToken.AccessTokenRefreshCallback() {
+                        @Override
+                        public void OnTokenRefreshed(AccessToken accessToken) {
+                            long expiryTime = AccessToken.getCurrentAccessToken().getExpires().getTime() - new Date().getTime();
+                            SecurityCacheMapService.INSTANCE.putToCache("accessToken", accessToken.getToken(), expiryTime);
+                            AccessToken.setCurrentAccessToken(accessToken);
+                        }
+
+                        @Override
+                        public void OnTokenRefreshFailed(FacebookException exception) {
+
+                        }
+                    });
+                }
             }
         }
     }
@@ -319,7 +338,16 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
 
         navHeader = navigationView.getHeaderView(0);
         nav_header_user_name = navHeader.findViewById(R.id.nav_header_user_name);
-        nav_header_user_name.setText("Hello, " + WordUtils.capitalizeFully(signInPage.getGoogleSignInAccount().getDisplayName()));
+
+        if ("facebook".equals(signInPage.getSignedInUsing())) {
+            try {
+                nav_header_user_name.setText("Hello, User");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed while accessing first_name of user when logged in with facebook" + e);
+            }
+        } else if ("google".equals(signInPage.getSignedInUsing())) {
+            nav_header_user_name.setText("Hello, " + WordUtils.capitalizeFully(signInPage.getGoogleSignInAccount().getDisplayName()));
+        }
 
     }
 
@@ -347,6 +375,23 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
 
     @Override
     public void onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -386,7 +431,7 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
 
             for (int i = 0; i < itemImagesJson.length(); i++) {
                 JSONObject itemImage = itemImagesJson.getJSONObject(i);
-                int item_id = itemImage.getInt("item");
+                int item_id = itemImage.getInt("item_id");
                 String item_image_url = itemImage.getString("item_image");
                 item_image_url = Constants.SERVER_URL + item_image_url;
                 multiImageUrl.put(Integer.toString(item_id), item_image_url);
@@ -736,6 +781,7 @@ public class ProductListingPage extends AppCompatActivity implements AbsListView
     private void getCartCount(String accessToken) {
         final HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         new AsyncTask<Void, Void, String>() {
 

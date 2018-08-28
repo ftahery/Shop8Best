@@ -11,10 +11,13 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -83,6 +86,7 @@ public class ProductDescription extends AppCompatActivity implements Connectivit
     CarouselView carouselView;
     private Spinner itemSizeTypeSpinner;
     private Spinner itemSizeSpinner;
+    private boolean doubleBackToExitPressedOnce = false;
 
     private ArrayList<String> item_image_urls;
     Item item;
@@ -437,6 +441,13 @@ public class ProductDescription extends AppCompatActivity implements Connectivit
         invalidateOptionsMenu();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        return;
+    }
+
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
@@ -548,6 +559,7 @@ public class ProductDescription extends AppCompatActivity implements Connectivit
     private void getCartCount(String accessToken) {
         final HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         new AsyncTask<Void, Void, String>() {
 
@@ -581,6 +593,7 @@ public class ProductDescription extends AppCompatActivity implements Connectivit
 
         final HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         new AsyncTask<Void, Void, String>() {
 
@@ -619,6 +632,7 @@ public class ProductDescription extends AppCompatActivity implements Connectivit
     private void isCartItem(String accessToken) {
         final HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         new AsyncTask<Void, Void, String>() {
 

@@ -281,6 +281,7 @@ public class AddressPage extends AppCompatActivity implements ConnectivityReceiv
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         userAddresses.setUser_name(user_name.getText().toString());
         userAddresses.setUser_area(user_area.getText().toString());

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.net.http.HttpAuthHeader;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +19,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,9 +44,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
 import company.shop8best.constants.Constants;
+import company.shop8best.model.SignIn;
 import company.shop8best.utils.AccessTokenUtil;
 import company.shop8best.utils.ConnectivityReceiver;
 import company.shop8best.utils.HttpClientUtil;
@@ -59,7 +68,6 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
     static GoogleSignInAccount googleSignInAccount;
     static Account account;
     String scope = "oauth2: profile email";
-    long cutOffTime = 120;
     ProgressDialog progressDialog = null;
     AccessTokenUtil accessTokenUtil;
     public static boolean isSignedIn = false;
@@ -67,7 +75,13 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
     ConnectivityReceiver connectivityReceiver;
     boolean isConnected;
     ConstraintLayout constraintLayout;
-    String accessToken;
+    static String accessToken;
+    LoginButton loginButton;
+    CallbackManager callbackManager;
+    LoginResult globalLoginResult;
+    public static String signedInUsing;
+    private static JSONObject objectResponse;
+    AccessToken.AccessTokenRefreshCallback accessTokenRefreshCallback;
 
     @Override
     protected void onStart() {
@@ -120,7 +134,77 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
 
         context = getApplicationContext();
 
+        if (AccessToken.getCurrentAccessToken() != null) {
+            signedInUsing = "facebook";
+            if (AccessToken.getCurrentAccessToken().getExpires().before(new Date())) {
+                accessToken = AccessToken.getCurrentAccessToken().getToken();
+                long expiryTime = AccessToken.getCurrentAccessToken().getExpires().getTime() - new Date().getTime();
+                SecurityCacheMapService.INSTANCE.putToCache("accessToken", AccessToken.getCurrentAccessToken().getToken(), expiryTime);
+                createUser();
+                startProductListingPage();
+                finish();
+            } else {
+                AccessToken.refreshCurrentAccessTokenAsync(new AccessToken.AccessTokenRefreshCallback() {
+                    @Override
+                    public void OnTokenRefreshed(AccessToken accessToken) {
+                        SignInPage.accessToken = accessToken.getToken();
+                        long expiryTime = AccessToken.getCurrentAccessToken().getExpires().getTime() - new Date().getTime();
+                        SecurityCacheMapService.INSTANCE.putToCache("accessToken", accessToken.getToken(), expiryTime);
+                        AccessToken.setCurrentAccessToken(accessToken);
+                        createUser();
+                        startProductListingPage();
+                        finish();
+                    }
+
+                    @Override
+                    public void OnTokenRefreshFailed(FacebookException exception) {
+                        Log.e(TAG, "Could not refresh the token. Exception occurred: ", exception);
+                    }
+                });
+            }
+        }
+
+        callbackManager = CallbackManager.Factory.create();
+
         signInButton = (GoogleSignInButton) findViewById(R.id.sign_in_button);
+        loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+        loginButton.setReadPermissions("email", "public_profile");
+
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                Log.i(TAG, "FACEBOOK ACCESS TOKEN: " + loginResult.getAccessToken().getToken());
+                accessToken = loginResult.getAccessToken().getToken();
+                setLoginResult(loginResult);
+                AccessToken.setCurrentAccessToken(loginResult.getAccessToken());
+
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                    objectResponse = object;
+                    signedInUsing = "facebook";
+                    Log.i(TAG, "IN ON COMPLETED");
+                    createUser();
+                    startProductListingPage();
+                    finish();
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "first_name,last_name,email,id");
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
         //skipButton = (Button) findViewById(R.id.skipButton);
         constraintLayout = (ConstraintLayout) findViewById(R.id.sign_in_page_constraint_layout);
 
@@ -129,7 +213,11 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
         if (!isConnected) {
             notConnectedToInternet();
         } else {
-            GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
+            GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.server_client_id))
+                    .requestEmail()
+                    .build();
+
             googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
             signInButton.setOnClickListener(this);
 
@@ -143,6 +231,7 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
                 Log.d(TAG, "Started the signIn activity");
                 this.account = googleSignInAccount.getAccount();
                 isSignedIn = true;
+                signedInUsing = "google";
                 new GetTokenTask().execute();
             }
 
@@ -153,6 +242,14 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
                 }
             });*/
         }
+    }
+
+    public static String getSignedInUsing() {
+        return signedInUsing;
+    }
+
+    public static JSONObject getFacebookResponseObject() {
+        return objectResponse;
     }
 
     public static void setGoogleSignInClient(GoogleSignInClient googleSignInClient) {
@@ -208,12 +305,22 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 9001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             handleSignInResult(task);
 
         }
+    }
+
+    public void setLoginResult(LoginResult loginResult) {
+        this.globalLoginResult = loginResult;
+    }
+
+    public LoginResult getLoginResult() {
+        return this.globalLoginResult;
     }
 
 
@@ -223,24 +330,31 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
             if (googleSignInAccount != null) {
                 account = googleSignInAccount.getAccount();
                 isSignedIn = true;
+                signedInUsing = "google";
                 new GetTokenTask().execute();
             }
 
 
         } catch (ApiException e) {
-            Log.d(TAG, "Login details were not fetched",e);
+            Log.d(TAG, "Login details were not fetched", e);
             updateUI(null);
         }
     }
 
     private void startProductListingPage() {
         Intent intent = new Intent(this, ProductListingPage.class);
-        Log.d(TAG, "HERE ARE THE DETAILS FOR THE ACCOUNT EXISTING " + account.toString());
-        intent.putExtra("ACCOUNT", account);
+
+        if ("google".equals(signedInUsing)) {
+            Log.d(TAG, "Signing in using Google");
+        } else if ("facebook".equals(signedInUsing)) {
+            Log.d(TAG, "Signing in using Facebook");
+        }
+
         intent.putExtra("SIGNEDIN", isSignedIn);
         startActivity(intent);
 
     }
+
 
     private void updateUI(Account account) {
         if (account != null) {
@@ -318,6 +432,8 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.AUTHORIZATION, accessToken);
+        Log.i(TAG, "Currently signing through " + signedInUsing);
+        headers.put("SIGNIN", signedInUsing);
 
         new AsyncTask<Void, Void, Boolean>() {
 
@@ -329,7 +445,7 @@ public class SignInPage extends AppCompatActivity implements View.OnClickListene
                     JSONObject responseMessage = new JSONObject(createUser);
                     return responseMessage.getBoolean("message");
                 } catch (JSONException e) {
-                    Log.e(TAG, "Json parsing failed for the response while creating user",e);
+                    Log.e(TAG, "Json parsing failed for the response while creating user", e);
                     return false;
                 }
             }

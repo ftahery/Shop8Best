@@ -6,7 +6,7 @@ package company.shop8best.constants;
 
 public class Constants {
 
-    public static final String SERVER_URL = "http://139.59.58.132";
+    public static final String SERVER_URL = "http://192.168.0.7:8000";
     public static final String SHOP8BEST = "/shop8best";
     public static final String CART_ITEMS_ENDPOINT = SHOP8BEST + "/getCartItems";
     public static final String ITEMS_ENDPOINT = SHOP8BEST + "/getItems";

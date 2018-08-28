@@ -6,7 +6,7 @@
     android:background="@color/bootstrap_gray_lighter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#000000">
+    android:backgroundTint="#FFFFFF">
 
     <TextView
         android:id="@+id/item_name"

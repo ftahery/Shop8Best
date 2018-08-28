@@ -188,6 +188,14 @@ public class CartPage extends AppCompatActivity implements AbsListView.OnScrollL
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+
+
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -215,6 +223,8 @@ public class CartPage extends AppCompatActivity implements AbsListView.OnScrollL
         ArrayList<CartItem> cartList = new ArrayList<>();
         HashMap<String,String> headers = new HashMap<>();
         headers.put("Authorization",accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
+
         String cartItemsBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL+Constants.CART_ITEMS_ENDPOINT,headers);
 
         Gson gson = new Gson();

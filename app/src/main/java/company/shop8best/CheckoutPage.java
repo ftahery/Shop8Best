@@ -218,6 +218,12 @@ public class CheckoutPage extends AppCompatActivity implements AbsListView.OnScr
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         Log.d(TAG, "onScrollStateChanged:" + scrollState);
 
@@ -243,6 +249,7 @@ public class CheckoutPage extends AppCompatActivity implements AbsListView.OnScr
         ArrayList<CartItem> cartList = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
         String cartItemsBody = HttpClientUtil.stringResponseForGetRequest(Constants.SERVER_URL + Constants.CART_ITEMS_ENDPOINT, headers);
 
         Gson gson = new Gson();
@@ -413,6 +420,7 @@ public class CheckoutPage extends AppCompatActivity implements AbsListView.OnScr
     private void placeOrder(OrderRequest orderRequest) {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", accessToken);
+        headers.put("SIGNIN", SignInPage.getSignedInUsing());
 
         String responseBody = HttpClientUtil.placeOrder(Constants.SERVER_URL + Constants.PLACE_ORDER, headers, orderRequest);
 
